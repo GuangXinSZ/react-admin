@@ -68,7 +68,7 @@ class LeftNav extends Component {
       <div className="left-nav">
         <Link to='/' className="left-nav-header">
           <img src={Logo} alt=""/>
-          <h1>蛙谷后台</h1>
+          <h1>后台管理系统</h1>
         </Link>
         <Menu
           selectedKeys={[ path ]}
