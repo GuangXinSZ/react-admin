@@ -65,7 +65,7 @@ class Login extends Component {
     return (
       <div className="login">
         <header className="login-header">
-          <img src={ Logo } alt="" />
+          {/* <img src={ Logo } alt="" /> */}
           <h1>React： 后台管理系统</h1>
         </header>
         <section className="login-content">
