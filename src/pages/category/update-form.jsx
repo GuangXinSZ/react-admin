@@ -1,30 +1,35 @@
 import React, { Component } from 'react'
-import { Form, Select } from 'antd'
-
+import { Form, Input } from 'antd'
+import PropTypes from 'prop-types' 
 
 const Item = Form.Item
-const Option = Select.Option
 
 class updateForm extends Component {
+
+  static propTypes = {
+    categoryName: PropTypes.string.isRequired,
+    setForm: PropTypes.func.isRequired
+  }
+
+  componentWillMount () {
+    // 将form对象通过setform传给父组件
+    this.props.setForm(this.props.form)
+  }
   render () {
+    // 获取父组件传的参数
+    const { categoryName } = this.props
     const { getFieldDecorator } = this.props.form
 
     return (
       <Form>
         <Item>
           {
-            getFieldDecorator('parentId', {
+            getFieldDecorator('categoryName', {
               rules: [
               ],
-              initialValue: '0'
+              initialValue: categoryName
             })(
-              <Select>
-                <Option value='0'>一级分类</Option>
-                <Option value='1'>电脑</Option>
-                <Option value='2'>图书</Option>
-                <Option value='3'>笔记本</Option>
-                <Option value='4'>水果</Option>
-              </Select>
+              <Input placeholder="请输入分类名称"/>
             )
           }
         </Item>

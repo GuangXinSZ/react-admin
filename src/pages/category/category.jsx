@@ -3,7 +3,7 @@ import { Card, Button, Icon, Table, message, Modal } from 'antd'
 import ButtonLine from '../../comonents/link-button/index'
 import AddForm from './add-form'
 import UpdateForm from './update-form'
-import { reqCategorys } from '../../api/index'
+import { reqCategorys, reqUpdateCategory } from '../../api/index'
 import LinkButton from '../../comonents/link-button/index';
 
 // 分类路由
@@ -68,11 +68,26 @@ export default class Category extends Component {
   
   }
   // 更新分类
-  updateCategeory = () => {
+  updateCategeory = async () => {
+    const categoryId = await this.category._id
+    const categoryName = this.form.getFieldValue('categoryName')
+    const result = await reqUpdateCategory({categoryId, categoryName})
     
+    if (result.status === 0) {
+      // 清空数据表
+      this.form.resetFields()
+      this.getCategorys()
+      message.info('修改成功!');
+       // 隐藏确认框
+      this.setState({
+        showStatus: 0
+      })
+    }
   }
   // 隐藏dialog
   handleCancel = () => {
+     // 清空数据表
+    this.form.resetFields()
     this.setState({
       showStatus: 0
     })
@@ -83,7 +98,8 @@ export default class Category extends Component {
     })
   }
   updateCategory = (category) => {
-    console.log(category)
+    // 保存分类对象
+    this.category = category
     this.setState({
       showStatus: 2
     })
@@ -113,6 +129,8 @@ export default class Category extends Component {
 
   render () {
     const { categorys, loadingIsVisibile, parentId, subCategorys, parentName, showStatus } = this.state
+    // 读取指定的分类
+    const category = this.category || {}
 
     // 一级分类的名称
     const title = parentId === 0 ? '一级分类' : (
@@ -154,7 +172,10 @@ export default class Category extends Component {
           onOk={this.updateCategeory}
           onCancel={this.handleCancel}
         >
-          <UpdateForm categoryName={''}></UpdateForm>
+          <UpdateForm 
+            categoryName={category.name} 
+            setForm={(form) => {this.form = form}}
+          ></UpdateForm>
         </Modal>
       </Card>
     )
